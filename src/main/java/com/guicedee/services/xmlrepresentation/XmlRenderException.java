@@ -1,11 +1,17 @@
 package com.guicedee.services.xmlrepresentation;
 
+/**
+ * Unchecked exception raised when XML marshalling or unmarshalling fails.
+ * <p>
+ * This exception wraps underlying reflection, JAXB, and streaming failures
+ * to avoid leaking low-level exceptions to callers of XML rendering utilities.
+ */
 public class XmlRenderException extends RuntimeException
 {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Instantiates a new Module exception.
+	 * Creates a new exception without a message or cause.
 	 */
 	public XmlRenderException()
 	{
@@ -13,9 +19,9 @@ public class XmlRenderException extends RuntimeException
 	}
 	
 	/**
-	 * Instantiates a new Module exception.
+	 * Creates a new exception with the supplied message.
 	 *
-	 * @param message the message
+	 * @param message the detail message
 	 */
 	public XmlRenderException(String message)
 	{
@@ -23,10 +29,10 @@ public class XmlRenderException extends RuntimeException
 	}
 	
 	/**
-	 * Instantiates a new Module exception.
+	 * Creates a new exception with the supplied message and cause.
 	 *
-	 * @param message the message
-	 * @param cause   the cause
+	 * @param message the detail message
+	 * @param cause   the underlying failure
 	 */
 	public XmlRenderException(String message, Throwable cause)
 	{
@@ -34,9 +40,9 @@ public class XmlRenderException extends RuntimeException
 	}
 	
 	/**
-	 * Instantiates a new Module exception.
+	 * Creates a new exception with the supplied cause.
 	 *
-	 * @param cause the cause
+	 * @param cause the underlying failure
 	 */
 	public XmlRenderException(Throwable cause)
 	{
@@ -44,12 +50,12 @@ public class XmlRenderException extends RuntimeException
 	}
 	
 	/**
-	 * Instantiates a new Module exception.
+	 * Creates a new exception with full control of suppression and stack trace behavior.
 	 *
-	 * @param message            the message
-	 * @param cause              the cause
-	 * @param enableSuppression  the enable suppression
-	 * @param writableStackTrace the writable stack trace
+	 * @param message            the detail message
+	 * @param cause              the underlying failure
+	 * @param enableSuppression  whether suppression is enabled
+	 * @param writableStackTrace whether the stack trace should be writable
 	 */
 	public XmlRenderException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
 	{

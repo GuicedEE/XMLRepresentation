@@ -2,6 +2,8 @@ module com.guicedee.xmlrepresentation {
 	exports com.guicedee.services.xmlrepresentation;
 	
 	requires transitive org.glassfish.jaxb.runtime;
+
+	requires transitive com.guicedee.client;
 	
 	requires static lombok;
 	requires java.logging;

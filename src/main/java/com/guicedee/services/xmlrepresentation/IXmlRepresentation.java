@@ -1,6 +1,6 @@
 package com.guicedee.services.xmlrepresentation;
 
-import com.guicedee.services.xmlrepresentation.utils.Pair;
+import com.guicedee.client.utils.Pair;
 import jakarta.xml.bind.*;
 
 import javax.xml.namespace.QName;
@@ -12,14 +12,31 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Makes any object representable as XML
+ * Defines XML marshalling and unmarshalling behavior for a type.
+ * <p>
+ * Implementors gain default helpers that serialize the implementing instance
+ * to XML or create a new instance from XML using JAXB. JAXB contexts are cached
+ * in {@link XmlContexts} to avoid repeated initialization overhead.
  *
- * @param <J>
+ * @param <J> the concrete type represented by this interface
  */
 public interface IXmlRepresentation<J>
 {
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * Creates an instance of the supplied type from the provided XML string.
+	 * <p>
+	 * If the target type is not annotated with a root element, the unmarshaller
+	 * wraps the XML with a {@link JAXBElement} created from the simple class name.
+	 * Parser settings for external entities and DTD support are taken from
+	 * {@link #isResolveExternalEntities()} and {@link #isSupportDTD()}.
+	 *
+	 * @param xml  the XML document or fragment to parse
+	 * @param type the class to instantiate and populate
+	 * @return a populated instance of the requested type
+	 * @throws XmlRenderException if reflection, JAXB, or streaming fails
+	 */
 	default J fromXml(String xml, Class<J> type)
 	{
 		try
@@ -82,6 +99,18 @@ public interface IXmlRepresentation<J>
 	}
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * Marshals this instance to XML using JAXB.
+	 * <p>
+	 * If the instance has no root element annotation, a synthetic root element
+	 * is created using the simple class name. Pair instances are handled by
+	 * building a JAXB context that includes the key and value types.
+	 * Output formatting and fragment handling are governed by
+	 * {@link #isFormattedOutput()} and {@link #isFragment()}.
+	 *
+	 * @return the serialized XML for this instance
+	 * @throws XmlRenderException if marshalling fails
+	 */
 	default String toXml()
 	{
 		Object requestObject = this;
@@ -130,8 +159,9 @@ public interface IXmlRepresentation<J>
 	}
 	
 	/**
-	 * The property that requires the parser to resolve external parsed entities
-	 * @return
+	 * Whether the XML parser should resolve external entities.
+	 *
+	 * @return {@code true} to allow resolving external entities
 	 */
 	default boolean isResolveExternalEntities()
 	{
@@ -139,8 +169,9 @@ public interface IXmlRepresentation<J>
 	}
 	
 	/**
-	 * Write a DTD statement to the XML
-	 * @return
+	 * Whether the XML parser should support DTD processing.
+	 *
+	 * @return {@code true} to allow DTD support
 	 */
 	default boolean isSupportDTD()
 	{
@@ -148,8 +179,9 @@ public interface IXmlRepresentation<J>
 	}
 	
 	/**
-	 * The name of the property used to specify whether or not the marshalled XML data is formatted with linefeeds and indentation
-	 * @return
+	 * Whether the marshalled XML should be formatted with indentation and line breaks.
+	 *
+	 * @return {@code true} to enable formatted output
 	 */
 	default boolean isFormattedOutput()
 	{
@@ -157,9 +189,12 @@ public interface IXmlRepresentation<J>
 	}
 	
 	/**
-	 * The name of the property used to specify whether or not the marshaller will generate document level events (ie calling startDocument or endDocument).
+	 * Whether the marshaller should generate document level events.
+	 * <p>
+	 * When {@code true}, JAXB writes fragments without startDocument/endDocument
+	 * events and without an XML declaration.
 	 *
-	 * @return
+	 * @return {@code true} to marshal as a fragment
 	 */
 	default boolean isFragment()
 	{
