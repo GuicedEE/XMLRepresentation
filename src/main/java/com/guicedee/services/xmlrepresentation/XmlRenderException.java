@@ -1,4 +1,4 @@
-package com.guicedee.services.xmlrepresentation;
+package com.guicedee.modules.services.xmlrepresentation;
 
 /**
  * Unchecked exception raised when XML marshalling or unmarshalling fails.

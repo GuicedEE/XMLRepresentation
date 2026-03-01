@@ -1,4 +1,4 @@
-package com.guicedee.services.xmlrepresentation;
+package com.guicedee.modules.services.xmlrepresentation;
 
 import jakarta.xml.bind.JAXBContext;
 

@@ -1,5 +1,5 @@
 module com.guicedee.xmlrepresentation {
-	exports com.guicedee.services.xmlrepresentation;
+	exports com.guicedee.modules.services.xmlrepresentation;
 	
 	requires transitive org.glassfish.jaxb.runtime;
 
